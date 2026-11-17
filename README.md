@@ -14,7 +14,7 @@ This project was done as part of the final-year capstone project, Dept. of Elect
 
 As cobots increasingly work alongside people, they need to anticipate and avoid collisions in real time. This project formulates manipulator motion planning as a **nonlinear MPC problem**: at each step the controller predicts the arm's motion over a horizon and optimizes joint accelerations to track the goal pose while enforcing a hard **minimum-safety-distance** constraint to every obstacle. The approach is tested on four cases of increasing difficulty — no obstacles, static obstacles, multiple moving obstacles, and a **human-like moving obstacle** — to show it generalizes from empty workspaces to realistic human-collaboration scenarios.
 
-<img width="853" height="313" alt="human_mult_comb" src="https://github.com/user-attachments/assets/26a682f3-4618-45e9-8f1e-446c7eb2f96b" />
+<img width="3412" height="1252" alt="human_mult_comb_4x" src="https://github.com/user-attachments/assets/f06147e7-0f75-436e-87c9-355a5d988d45" />
 
 
 ## Method
@@ -23,7 +23,7 @@ As cobots increasingly work alongside people, they need to anticipate and avoid 
 - **Nonlinear MPC.** The controller commands joint accelerations; the state is joint position and velocity, with simple double-integrator joint dynamics `ẋ = [0 I; 0 0]x + [0; I]u`. A quadratic cost tracks the desired end-effector pose (`Qr`), penalizes control effort (`Qu`), and adds terminal terms (`Qf`, `Qq`) for tracking and motion rate at the end of the horizon.
 - **Safety as a hard constraint.** An inequality constraint (`nlmpcIneqConFunctionKINOVA.m`) runs `checkCollision` between the robot and all obstacles across the whole prediction horizon and requires every link–obstacle separation `dₙ,ₘ ≥ d_safe`; any predicted trajectory that violates it is rejected.
 - **Obstacles.** Static obstacles are spheres/boxes; moving obstacles follow pre-defined trajectories (the controller only sees their current pose each step, as a sensor would).
-- **Human as collision geometry.** The `atlas` humanoid model is driven through a motion via an `interactiveRigidBodyTree`; the poses of its major joints (hands, forearms, thighs, shins, head, torso) are sampled at each step and wrapped in **collision meshes** to build a person-shaped, moving obstacle the arm must avoid (`Laasya_humanoid.m`).
+- **Human as collision geometry.** The `atlas` humanoid model is driven through a motion via an `interactiveRigidBodyTree`; the poses of its major joints (hands, forearms, thighs, shins, head, torso) are sampled at each step and wrapped in **collision meshes** to build a person-shaped, moving obstacle the arm must avoid (`humanoid_collision_model.m`).
 
 <img width="455" height="406" alt="human_mesh" src="https://github.com/user-attachments/assets/1aa04882-c7e8-4bab-a7f8-2271ae9e490b" />
 
@@ -44,7 +44,7 @@ Evaluated on four cases — **Case 0:** no obstacles, **Case 1:** 3 obstacles, *
 |---------------|-------------|
 | `Updated_PlanAndExecute/` | Main, most up-to-date version of the pipeline. |
 | `Updated_PlanAndExecute/PlanAndExecuteCollisionFreeTrajectoriesExample.mlx` | Top-level script — sets up the arm, obstacles, and NMPC, and runs the simulation. |
-| `Updated_PlanAndExecute/Laasya_humanoid.m` | Builds the human as a moving collision mesh from the `atlas` humanoid model. |
+| `Updated_PlanAndExecute/humanoid_collision_model.m` | Builds the human as a moving collision mesh from the `atlas` humanoid model. |
 | `nlmpcIneqConFunctionKINOVA.m` | Collision-avoidance constraint (separation ≥ safety distance over the horizon). |
 | `helperCreateObstaclesKINOVA.m` / `helperUpdateMovingObstaclesKINOVA.m` | Define and animate static/moving obstacles. |
 | `nlmpc*KINOVA.m` | NMPC model, cost, and Jacobian functions for the KINOVA Gen3. |
