@@ -14,8 +14,13 @@ This project was done as part of the final-year capstone project, Dept. of Elect
 
 As cobots increasingly work alongside people, they need to anticipate and avoid collisions in real time. This project formulates manipulator motion planning as a **nonlinear MPC problem**: at each step the controller predicts the arm's motion over a horizon and optimizes joint accelerations to track the goal pose while enforcing a hard **minimum-safety-distance** constraint to every obstacle. The approach is tested on four cases of increasing difficulty — no obstacles, static obstacles, multiple moving obstacles, and a **human-like moving obstacle** — to show it generalizes from empty workspaces to realistic human-collaboration scenarios.
 
-<img width="3412" height="1252" alt="human_mult_comb_4x" src="https://github.com/user-attachments/assets/f06147e7-0f75-436e-87c9-355a5d988d45" />
+<p align="center">
+  <img width="720" alt="KINOVA Gen3 avoiding a moving human (left) and multiple obstacles (right)" src="https://github.com/user-attachments/assets/f06147e7-0f75-436e-87c9-355a5d988d45" />
+  <br>
+  <em>The KINOVA Gen3 arm avoiding a moving human (left) and multiple static and moving obstacles (right).</em>
+</p>
 
+---
 
 ## Method
 
@@ -25,8 +30,13 @@ As cobots increasingly work alongside people, they need to anticipate and avoid 
 - **Obstacles.** Static obstacles are spheres/boxes; moving obstacles follow pre-defined trajectories (the controller only sees their current pose each step, as a sensor would).
 - **Human as collision geometry.** The `atlas` humanoid model is driven through a motion via an `interactiveRigidBodyTree`; the poses of its major joints (hands, forearms, thighs, shins, head, torso) are sampled at each step and wrapped in **collision meshes** to build a person-shaped, moving obstacle the arm must avoid (`humanoid_collision_model.m`).
 
-<img width="455" height="406" alt="human_mesh" src="https://github.com/user-attachments/assets/1aa04882-c7e8-4bab-a7f8-2271ae9e490b" />
+<p align="center">
+  <img width="320" alt="Human modeled as collision meshes" src="https://github.com/user-attachments/assets/1aa04882-c7e8-4bab-a7f8-2271ae9e490b" />
+  <br>
+  <em>The human obstacle, built from collision meshes around the humanoid's limbs, head and torso.</em>
+</p>
 
+---
 
 ## Results
 
@@ -38,6 +48,8 @@ Evaluated on four cases — **Case 0:** no obstacles, **Case 1:** 3 obstacles, *
 
 *(Full per-joint plots, torque/cost-function figures, and error tables are in the paper.)*
 
+---
+
 ## Repository structure
 
 | Folder / file | Description |
@@ -45,15 +57,25 @@ Evaluated on four cases — **Case 0:** no obstacles, **Case 1:** 3 obstacles, *
 | `Updated_PlanAndExecute/` | Main, most up-to-date version of the pipeline. |
 | `Updated_PlanAndExecute/PlanAndExecuteCollisionFreeTrajectoriesExample.mlx` | Top-level script — sets up the arm, obstacles, and NMPC, and runs the simulation. |
 | `Updated_PlanAndExecute/humanoid_collision_model.m` | Builds the human as a moving collision mesh from the `atlas` humanoid model. |
-| `nlmpcIneqConFunctionKINOVA.m` | Collision-avoidance constraint (separation ≥ safety distance over the horizon). |
-| `helperCreateObstaclesKINOVA.m` / `helperUpdateMovingObstaclesKINOVA.m` | Define and animate static/moving obstacles. |
-| `nlmpc*KINOVA.m` | NMPC model, cost, and Jacobian functions for the KINOVA Gen3. |
+| `Updated_PlanAndExecute/nlmpcIneqConFunctionKINOVA.m` | Collision-avoidance constraint (separation ≥ safety distance over the horizon). |
+| `Updated_PlanAndExecute/helperCreateObstaclesKINOVA.m`, `helperUpdateMovingObstaclesKINOVA.m` | Define and animate static/moving obstacles. |
+| `Updated_PlanAndExecute/nlmpc*KINOVA.m` | NMPC model, cost, and Jacobian functions for the KINOVA Gen3. |
 | `DynamicObstacleAvoidance/`, `misc/` | Earlier versions and supporting scripts. |
 | `PickAndPlaceWorkflowUsingStateflowForMATLABExample/` | Pick-and-place workflow the planner integrates with. |
+
+---
+
+## Stack
+
+`Nonlinear MPC` · `MATLAB` · `Robotics System Toolbox` · `Model Predictive Control Toolbox` · `KINOVA Gen3` · `Collision checking`
+
+---
 
 ## Requirements
 
 MATLAB with the **Robotics System Toolbox** and **Model Predictive Control Toolbox** (R2021b+ recommended).
+
+---
 
 ## Running it
 
@@ -64,11 +86,15 @@ open PlanAndExecuteCollisionFreeTrajectoriesExample.mlx
 % toggle static vs. moving obstacles via the isMovingObst flag
 ```
 
+---
+
 ## My contributions
 
 This was a team project (5 authors). My main contributions were:
-- **Implementing the nonlinear MPC with collision-avoidance constraints** for the manipulator - formulating and tuning the safety-distance inequality that keeps the arm provably clear of obstacles.
+- **Implementing the nonlinear MPC with collision-avoidance constraints** for the manipulator - formulating and tuning the safety-distance inequality that keeps the arm a safe distance from every obstacle.
 - **Modeling the human as a dynamic obstacle** - sampling the humanoid's limb poses over time and constructing the **collision meshes** that represent the moving person for the controller to avoid.
+
+---
 
 ## Acknowledgement
 
