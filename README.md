@@ -12,7 +12,7 @@ This project was done as part of the final-year capstone project, Dept. of Elect
 
 ## Overview
 
-As cobots increasingly work alongside people, they need to anticipate and avoid collisions in real time. This project formulates manipulator motion planning as a **nonlinear MPC problem**: at each step the controller predicts the arm's motion over a horizon and optimizes joint accelerations to track the goal pose while enforcing a hard **minimum-safety-distance** constraint to every obstacle. The approach is tested on four cases of increasing difficulty — no obstacles, static obstacles, multiple moving obstacles, and a **human-like moving obstacle** — to show it generalizes from empty workspaces to realistic human-collaboration scenarios.
+As cobots increasingly work alongside people, they need to anticipate and avoid collisions in real time. This project formulates manipulator motion planning as a **nonlinear MPC problem**: at each step the controller predicts the arm's motion over a horizon and optimizes joint accelerations to track the goal pose while enforcing a hard **minimum-safety-distance** constraint to every obstacle. The approach is tested on four cases of increasing difficulty - no obstacles, static obstacles, multiple moving obstacles, and a **human-like moving obstacle** - to show it generalizes from empty workspaces to realistic human-collaboration scenarios.
 
 <p align="center">
   <img width="720" alt="KINOVA Gen3 avoiding a moving human (left) and multiple obstacles (right)" src="https://github.com/user-attachments/assets/f06147e7-0f75-436e-87c9-355a5d988d45" />
@@ -40,7 +40,7 @@ As cobots increasingly work alongside people, they need to anticipate and avoid 
 
 ## Results
 
-Evaluated on four cases — **Case 0:** no obstacles, **Case 1:** 3 obstacles, **Case 2:** 4 moving obstacles, **Case 3:** human-like obstacle — with position, acceleration, smoothness, torque, and cost-function analysis per joint.
+Evaluated on four cases - **Case 0:** no obstacles, **Case 1:** 3 obstacles, **Case 2:** 4 moving obstacles, **Case 3:** human-like obstacle - with position, acceleration, smoothness, torque, and cost-function analysis per joint.
 
 - A **prediction horizon of 5** gave the best trade-off between goal-reaching speed and cost, chosen after comparing horizons of 3, 5, and 7.
 - The arm reached its goal collision-free in all four cases, including around the moving human.
